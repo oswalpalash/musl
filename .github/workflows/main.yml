@@ -30,4 +30,16 @@ jobs:
     - name: Run CodeChecker
       run: |
         CodeChecker log --build "make clean; make" --output ./compile_commands.json
+    - name: Analyze Build Reports
+      run: |
+        CodeChecker analyze ./compile_commands.json --enable sensitive --output ./reports
+    - name: Produce CodeChecker Reports
+      run: |
+        CodeChecker parse --export html --output ./reports_html ./reports
+    - name: Commit Reports Back to Repo
+      run: |
+        git add reports_html
+        git commit -m "Add CodeChecker Reports"
+        git push origin master
+    
     
